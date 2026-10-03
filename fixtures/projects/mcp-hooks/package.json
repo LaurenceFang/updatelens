@@ -1,0 +1,1 @@
+{"private":true,"scripts":{"agent:review":"claude --mcp-config .mcp.json --permission-mode plan"}}
