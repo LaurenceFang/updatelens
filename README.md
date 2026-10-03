@@ -1,43 +1,54 @@
 # UpdateLens
 
-An English developer update impact workbench for Claude Code, Codex CLI, and Codex desktop. It connects official update statements with scoped project declarations, makes the association reviewable, and records user verification tasks.
+**Source-linked update reviews and verification prompts for Claude Code and Codex.**
 
-Source delivery is a **private GitHub repository**. No public deployment is part of the current delivery. The app supports local operation and a synthetic sample mode; sample projects never represent a user's production projects.
+UpdateLens connects official release notes with agent configuration declared in your projects. It helps you identify what deserves a closer look, inspect the evidence, and record what you actually checked.
 
-Private source: [LaurenceFang/updatelens](https://github.com/LaurenceFang/updatelens). This prototype was developed as advance preparation. It is not represented as work completed entirely inside a later timed assessment.
+## Why UpdateLens?
 
-## Run locally
+Coding agents change quickly. Release notes describe new MCP behavior, hooks, permissions, and configuration options, but do not tell you whether your projects use them. UpdateLens brings official changes and project declarations into one review. Facts, observations, and inferred relevance stay separate, so missing evidence remains visible.
 
-Requirements: Node.js 22.19 or newer and npm.
+## Features
 
-```powershell
+- **Distinct channels:** Claude Code, Codex CLI, and Codex desktop, with separate version or date ranges.
+- **Scoped review:** scan up to three explicitly registered local projects, or explore reproducible synthetic examples.
+- **Cited findings:** inspect official source links, known configuration fields, declared flags, hypotheses, and suggested checks.
+- **Verification Pack:** preview, copy, or download a read-only coding-agent prompt for the selected finding, including sources, declarations, unknowns, and a verification checklist. Generating a pack makes no model call.
+- **Optional AI refinement:** inspect the exact sanitized payload before sending it to OpenCode Go. A failed or unavailable model leaves the rule-based review usable.
+- **Review records:** browser-persisted Pending, Needs action, Done, or Deferred status and verification notes.
+- **Exports:** Markdown and JSON reports containing the complete scoped review, citations, and related notes.
+- **Desktop workspace:** focused reading layout, project/category navigation, subtle transitions, and reduced-motion support.
+
+## Quick start
+
+Requires **Node.js 22.19+** and npm.
+
+```sh
+git clone https://github.com/LaurenceFang/updatelens.git
+cd updatelens
 npm ci
 npm run build
 npm start
 ```
 
-Open `http://127.0.0.1:4317`. The production UI and API share the same loopback service. The service never binds to an external interface.
+Open **http://127.0.0.1:4317**. The UI and API share a loopback service. Sample projects and rule-based analysis work without an API key.
 
-For frontend development:
+For development, run `npm run dev` and open **http://127.0.0.1:5173**. Vite proxies API requests to the backend.
 
-```powershell
-npm run dev
-```
+## Workflow
 
-Open `http://127.0.0.1:5173`. Vite proxies `/api` to the loopback backend. The development server explicitly allows only the fixed Vite and backend loopback origins; production excludes the Vite origin.
+1. Choose the product, current/target version or date, and development OS.
+2. Open **Edit scope** to select workflow areas and projects. Use **Scan selected** for registered projects.
+3. Choose **Analyze update**, then select a finding in the right-hand index.
+4. Inspect the official change, project declarations, hypothesis, and suggested check. Expand references for the full evidence.
+5. Open **Verification pack** to preview, copy, or download a source-linked review prompt.
+6. Record your observations and task status, then export Markdown or JSON.
 
-Tests and official snapshot retrieval:
+Right-side project/category filters change the reading view, not collection scope. Exports include the complete scoped review.
 
-```powershell
-npm test
-npm run refresh:releases
-```
+## Local projects
 
-The refresh script retrieves public official sources only and replaces the bundled snapshot only after all adapters succeed. Rebuild after a script refresh to update the standalone sample bundle. The app's Refresh sources button updates the running server snapshot in memory and retains the existing snapshot on failure.
-
-## Register explicit projects
-
-Create ignored `.local/projects.json` with up to three explicit absolute roots. API requests can select these IDs; they cannot submit filesystem paths. The schema is:
+Create ignored `.local/projects.json` with up to three explicit absolute roots:
 
 ```json
 {
@@ -45,56 +56,63 @@ Create ignored `.local/projects.json` with up to three explicit absolute roots. 
     {
       "id": "example-project",
       "name": "Example project",
-      "rootPath": "C:/YourWorkspace/example-project"
+      "rootPath": "C:/projects/example-project"
     }
   ]
 }
 ```
 
-Use distinct lowercase IDs and roots. IDs beginning with `demo-` are reserved. Restart the backend after changing registration. Paths and registration values belong only in ignored local configuration, never tracked code or documentation. Inaccessible roots remain visible as per-project scan failures.
+Restart the backend after changing registration. IDs starting with `demo-` are reserved. A missing registration file permits sample-only operation; invalid configuration produces a startup error.
 
-A missing registration file permits sample-only startup. Malformed JSON or an unreadable registration file stops startup with a clear configuration error; it never silently discards registered projects.
+Collection uses a bounded allowlist of project-level agent configuration, known script references, CI declarations, and skill metadata. Scope escapes and symlinks/junctions are rejected. The collector does not execute project commands, install updates, inspect conversation histories, or upload arbitrary source trees.
 
-Choose Registered local projects, select at most three projects, and scan to review bounded declaration summaries. The collector reads supported agent configuration, known script references, CI declarations, skill metadata, and limited activity metadata. It rejects symlinks/junctions, oversized files, and scope escapes. It does not execute scripts, read secrets or `.env` files, inspect conversation histories or arbitrary source trees, discover other machine roots, modify projects, or install updates.
+## Optional AI configuration
 
-## Optional live analysis
+Set `OPENCODE_GO_API_KEY` in `.env.local`. Both `.env.local` and `.local/` are ignored by Git. Never put credentials in a `VITE_` variable.
 
-The server reads `OPENCODE_GO_API_KEY` from ignored `.env.local`. Keep the credential local; never use a `VITE_` credential variable or put it in tracked files. The endpoint and model are fixed to the authorized OpenCode Go service: `https://opencode.ai/zen/go/v1/chat/completions`, `deepseek-v4.1-flash`.
+The integration uses OpenCode Go at `https://opencode.ai/zen/go/v1/chat/completions` with `deepseek-v4.1-flash`. Select **Go payload preview**, review the normalized content, then explicitly send it if appropriate.
 
-Rule-only analysis works without a credential. Live analysis requires **Preview AI payload**, followed by **Send this payload to OpenCode Go**. The exact preview contains normalized, sanitized declaration summaries and public official statements. It excludes raw files, excerpts, project names and absolute roots. At most six finding groups are selected using a per-project quota (two each for three projects), with six representative changes and four evidence references per group; this partial refinement is disclosed. Original source/local facts and complete grouped citation sets remain unchanged.
+Requests exclude raw files, absolute roots, project names, and private collection digests. Refinement is bounded and balanced across selected projects. There are no automatic retries or model switches. Missing credentials, exhausted runtime limits, timeouts, and invalid output retain a rule-based report.
 
-The server uses `User-Agent: UpdateLens/0.1` and an ignored, stable provider session identity. There are no automatic retries, endpoint/model switches, purchases or paid fallbacks. The adapter defaults to twelve calls per process; this entry point uses eleven to account for a separate authorized credential smoke check. Failed calls consume the runtime budget. Restarting starts a new runtime budget, so operators must still respect their overall authorized allowance. Missing credentials, exhaustion, timeouts and invalid output retain a rule-only report with a visible status.
+**Verification Pack is a separate local feature:** it formats an inspectable prompt and neither sends it to a provider nor executes the proposed checks.
 
-Output citation checks establish known IDs and membership in the original finding; they do not establish semantic correctness. A model response is a hypothesis, never proof of compatibility or executed verification.
+## Static sample mode
 
-The fixed model request uses a bounded 4,096-token output budget and concise per-finding output instructions. Safe diagnostics are recorded only in ignored `.local/provider-diagnostics.jsonl`: controlled outcome codes, HTTP status, validated model label, finish reason, numeric token usage, lengths, elapsed time and selected group count. Prompts, responses, keys, session IDs, project IDs/names and roots are never logged there. Truncation or any schema/citation failure retains the rule report and does not trigger a retry.
+`npm run build` produces a static frontend in `dist/`. Without the local API, it uses bundled official release snapshots and synthetic projects. Local scanning, source refresh, and live AI are disabled; review, Verification Pack, notes, and client-side exports remain available.
 
-## What the sources establish
+Serve the build at a static host's root because asset paths are root-relative. Keep the local backend and private runtime configuration off public hosts.
 
-- **Claude Code:** five curated official changelog versions. The source does not provide publication dates; dates remain unknown rather than fabricated.
-- **Codex CLI:** five stable official GitHub releases from one bounded release page. Prereleases and older history are outside the curated window.
-- **Codex desktop:** five explicitly app-tagged, dated official update entries. Date ranges include every entry after the current date through the target date. Desktop builds and applicability are never inferred from CLI tags or project CLI configuration.
+## Sources and limitations
 
-Each entry carries a source URL and actual retrieval time. Every curated range states incomplete coverage. Unsupported boundaries and reversed ranges fail explicitly. A zero-change range is not a compatibility conclusion. Installed versions, global-only configuration and actual runtime use are uncollected; missing evidence means unknown.
+- Claude Code uses its official changelog; unavailable publication dates remain unknown.
+- Codex CLI uses stable official GitHub releases.
+- Codex desktop uses explicitly app-tagged, dated entries rather than CLI version numbers.
+- Snapshots cover a **curated, incomplete window**. Entries retain source URLs and retrieval times.
+- Project declarations do not establish installed versions, global-only configuration, or actual runtime usage.
+- Findings are associations to investigate. Empty results do not prove compatibility.
+- **Done is user-reported:** UpdateLens does not execute or independently verify checks.
 
-## Findings, tasks and exports
+Refresh the bundled sources with `npm run refresh:releases`, then rebuild.
 
-Findings distinguish official source facts, project observations, rule/AI inference and suggested user checks. Repeated changes are grouped by project/feature/category while preserving full source and evidence references. Confidence labels describe association strength, not upgrade safety. Manual pins reorder projects; activity ranking is approximate and its method is shown.
+## Validation
 
-The development OS is your declared selection, with a conservative Windows default in the local UI. It does not establish a remote CI runner's OS or filter away other-platform release statements. Older requests that omit this field normalize to unspecified. The declared OS is included in review context and the normalized AI preview.
+```sh
+npm test
+npm run build
+```
 
-Verification status and notes persist in versioned browser storage. Done means **user-reported**, not independently verified execution. Markdown and JSON exports include the report, cited sources, limitations, and related task notes through the boundary sanitizer. Use Method & privacy to clear stored task notes.
+Tests cover collection boundaries, channel separation, source ranges, task identity, citation validation, sanitization, exports, and Verification Pack behavior. Unit tests do not establish compatibility with an updated coding tool.
 
-## Structure
+## Architecture
 
-`src/shared` contains contracts; `src/core` contains collection, parsing, rules, fixtures and exports; `server` contains guarded APIs, official source adapters and the provider boundary; `src/components`, `src/client` and `src/styles` contain the workbench UI. The accepted visual reference is `design/workbench-redesign-v2.png`, with tokens in `design/redesign-spec.md` and the implementation history in `design/ITERATIONS.md`. Earlier concepts are historical material. Private runtime configuration and QA evidence belong in ignored `.local/`.
+| Area | Responsibility |
+| --- | --- |
+| `src/shared` | Typed contracts |
+| `src/core` | Collection, parsing, deterministic matching, sanitization, exports |
+| `src/client` | API access, preferences, presentation, Verification Pack generation |
+| `src/components` | React review workspace and dialogs |
+| `server` | Guarded local API, official sources, optional model integration |
+| `fixtures` | Reproducible synthetic projects |
+| `public/fonts` | Self-hosted typography and upstream licenses |
 
-See `docs/backend-notes.md` and `docs/core-notes.md` for implementation decisions. A successful build or unit suite does not substitute for real provider and browser acceptance; those checks are performed separately and reported with their evidence.
-
-## Verified delivery checks
-
-The complete automated suite passed 44 checks, including local authorization, scope limits, cross-product separation, contextual task identity, citation boundaries and exports. TypeScript and the production Vite build passed.
-
-Root separately exercised real OpenCode Go responses, the three-project preview/send/browser result, registered local collection, task/note reload persistence, changed-range isolation, pins/filters, both actual download formats, source refresh and invalid ranges. Synthetic samples also rendered from the static build without an API; local scans, refresh and AI were visibly unavailable in that mode. Private QA records are excluded from Git.
-
-The three explicitly supplied real roots yielded insufficient product-associated declarations: two had none within the supported scope; one had generic AGENTS.md presence only. Their applicability remains unconfirmed. These checks establish the collector's actual observed output, not tool compatibility or executed update safety.
+Built with **React, TypeScript, Vite, and Node.js**. Font and icon dependencies retain their upstream license notices.

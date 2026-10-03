@@ -1666,3 +1666,22 @@ select {
     font-size: 17px;
   }
 }
+.verification-pack {
+  margin-top: 12px;
+}
+.verification-pack-content {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  resize: vertical;
+}
+.verification-pack-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+}

@@ -1,6 +1,7 @@
 import type { ReviewController } from "../client/useReviewController";
 import { presentFinding, channelLabels } from "../client/presentation";
 import Icon from "./Icon";
+import VerificationPack from "./VerificationPack";
 const statuses = [
   ["pending", "Pending"],
   ["needs-action", "Needs action"],
@@ -285,6 +286,7 @@ export default function ReadingDocument({
             {index + 1} of {r.findings.length} in this view
           </span>
         </div>
+        <VerificationPack report={report} findingId={f.id} />
       </section>
       <div className="document-footer">
         <span>
