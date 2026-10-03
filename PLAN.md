@@ -7,7 +7,7 @@ English-first update impact assistant for developers using Claude Code and Codex
 
 ## Scope
 - Claude Code and Codex are required. Distinguish Codex CLI and desktop update channels. Never infer desktop versions or applicability from CLI releases. If the desktop source cannot establish a version mapping, expose dated official updates with coverage limitations.
-- Windows is the first real local target; responsive browser UI must work at desktop and mobile widths.
+- Windows is the first real local target. The user's latest scope is a desktop browser/workbench experience; laptop and desktop widths are required. Mobile-specific design and native desktop packaging are outside this revision.
 - Public demo uses documented fixtures and real public release snapshots. Local mode serves UI and API from the same loopback service and reads only explicitly registered roots (maximum three).
 - Sources include official release notes and documented configuration semantics. Show retrieval time, coverage, cache/stale state and per-entry source link.
 - Project evidence: supported agent configs, script declarations, CI references and limited activity metadata. No recursive whole-machine discovery. No secrets, .env files, conversation histories, arbitrary source upload, or project mutation. Scan failures remain per-project visible failures.
@@ -34,3 +34,7 @@ TypeScript with React/Vite UI, a small Node local backend, and shared typed cont
 
 ## Delegated decisions
 The user authorized routine execution choices and deviations to be made autonomously and recorded in DECISIONS.md. Use existing Go allowance only, no new purchases/top-ups. LATEST: create a private GitHub repository to save source; no public deployment now. Three real project roots have been supplied and are recorded in ignored local configuration; review collector before scanning them read-only. Do not begin/accept terms/submit the assessment.
+
+## Approved frontend replacement
+
+The earlier rendered frontend was rejected by the user. After visual exploration, the user approved the latest displayed option 1, Literary Graphite (`design/literary-graphite-concept.png`), and explicitly requested implementation before a functional walkthrough. The visual target is a central continuous review document with narrow right navigation, local Newsreader/Instrument Sans typography, warm-paper/graphite/clay tones and restrained transitions. Setup moves to Edit scope; source evidence, declaration evidence, inference, suggested checks, task records and all existing privacy gates remain functional. Project view filtering is separate from the maximum-three-project collection scope.

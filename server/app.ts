@@ -528,6 +528,7 @@ export function createApp(options: AppOptions) {
         css: "text/css",
         json: "application/json",
         png: "image/png",
+        woff2: "font/woff2",
         svg: "image/svg+xml",
       };
       res.writeHead(200, {

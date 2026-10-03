@@ -1,5 +1,7 @@
 # UpdateLens active workbench design
 
+Historical specification: superseded by the user's latest approved `literary-graphite-spec.md` and exact latest first Literary Graphite image. Preserve this earlier forest workbench as iteration history only.
+
 Reference: fresh full ImageGen concept `workbench-redesign-v2.png`. Previous screenshot/concept is rejected and must not be reused as an implementation baseline. Real typed API content replaces illustrative source statements in the concept.
 
 ## Design system

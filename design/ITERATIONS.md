@@ -1,5 +1,17 @@
 # Visible implementation iterations
 
+## Latest approved redesign — Literary Graphite (active)
+
+The user selected the latest displayed first Literary Graphite image and explicitly authorized implementation before the feature explanation. Exact source is `literary-graphite-concept.png`, latest `exec-8ee2668e-669d-4fd3-91a9-8bbb65d4f1a9.png`; older forest and Copper directions are historical.
+
+First build replaces the permanent left rail and split list/inspector with a central continuous reading document and a narrow right project/category/item index. A compact product/boundary/OS scope line opens a full scope dialog retaining all workflow toggles, maximum-three project checkboxes, manual pins, scoped Scan, Analyze, coverage and source refresh. Existing API/core/provider/storage/immutable IDs/exact-preview privacy gates are retained through a controller hook; right filtering is explicitly view-only. App no longer expands the former ~730-line component.
+
+Literary render pass1: root captured the actual native1487×1058 render with self-hosted fonts; source/render were directly viewed together. Task block was below the viewport and the right Current item/task summaries sat too low. Literary pass2 repairs inline provenance disclosures, concise strictly calibrated association summary with full original rule/AI inference/action expansion, complete190px internal finding index with counts/selected auto-reveal, ink source text and safe backtick inline code. No report/export/provider data was changed. Conditional selection scroll and storage-failure-safe Clear notes were also added. Current build is `index-ClQkagww.js` / `index-Bj69Xqmn.css`; actual root recapture/delta verification pending. See `design-qa.md` for P1/P2 history and blocked state.
+
+Actual self-hosted Newsreader/Instrument Sans, root-generated background/transparent mark and standard Phosphor icons are integrated. Root's direct selected-PNG font/layout measurements supersede the initial smaller prompt numbers; source size and optical weights, tokens, copy inventory and component/motion inventory are in `literary-graphite-spec.md`. First build passed; npm47/47 passed with view-only filtering and project-specific unknown-title tests. Parent IAB screenshot/fidelity/interaction checks remain pending and are tracked in root `design-qa.md` with `final result: blocked`.
+
+### Earlier design history
+
 The original implementation was rejected. A fresh full ImageGen concept is stored as `workbench-redesign-v2.png`; the older concept is preserved only as historical evidence.
 
 ## Pass 1 — Complete workbench restructuring

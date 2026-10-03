@@ -1,5 +1,19 @@
 # Frontend redesign and verification
 
+## Current approved direction — Literary Graphite
+
+The latest user-selected first Literary Graphite image supersedes the previous forest workbench. Active specification: `design/literary-graphite-spec.md`; exact selected source: `design/literary-graphite-concept.png` / latest `exec-8ee2668e-669d-4fd3-91a9-8bbb65d4f1a9.png`. Desktop browser targets only: native reference (actual1487×1058), 1440×1024 and1280×800/720; mobile/desktop packaging are not current requested deliverables.
+
+App is now composition (~100lines) over `useReviewController`, ScopeLine, ReadingDocument, ReviewIndex and ReviewDialogs/ScopeDialog. The controller preserves the existing normalized API request, registered-root ID selection, report invalidation, immutable context/task IDs, profile/pin/task persistence, exact server provider state and preview-bound Go send gate. Right project selection is a view filter among the current maximum-three scope-selected projects; it cannot alter collection or AI/export scope. Unknown titles identify projects/source grouping instead of repeating generic Unconfirmed.
+
+The continuous document displays actual full representative source text and expandable remaining source statements, declared flags/relative evidence rows prioritized by `prioritizeEvidence`, calibrated association/action, four user-reported statuses and controlled notes. Previous/Next navigate the actual filtered finding sequence. Note typing keeps the same document key; only intentional finding/project/category selection keys a single-document entrance, not the App/controller.
+
+Assets are real local generated PNGs and self-hosted WOFF2 fonts, supplied by root/backend. Standard icons use direct Phosphor2.1.10 CSR imports. No new animation dependency, CSS gradient/art logo, handcrafted SVG icon, model request or purchase was introduced. A measured selected marker slides for210ms, the document enters for210ms, native dialog close/open runs180ms, buttons lift1px on hover; reduced-motion disables movement immediately.
+
+Current `design-qa.md` is blocked pending parent IAB capture/actual interaction checks. Build/npm tests do not imply visual acceptance. No service restart/commit/push by frontend. The remainder of this file documents the older historical workbench acceptance and is not the active visual target.
+
+## Historical workbench record
+
 Fresh design: `design/workbench-redesign-v2.png`, generated with built-in ImageGen from a full product-surface brief. The visual system uses a true white canvas, cool neutral rail/inspector, forest accent, restrained amber uncertainty marker, thin dividers and native-code outlined icons. Generated text is design guidance only; runtime source statements and findings remain supplied by the real typed API/core.
 
 Components: App coordinates backend state, setup, findings, inspector and dialogs. SelectionBar renders product/range and workflow toggles; ProjectList shows concise registered/fixture declarations and manual pins; FindingList gives readable filtered associations; Inspector retains source/evidence/inference/action separation with disclosures and user-reported task records. Dialog hosts sources/method/export and the exact external AI preview. No provider call is made by visual testing.

@@ -45,3 +45,13 @@
 - Complete standard npm test passed 44/44; TypeScript/Vite production build passed. The final backend review repaired explicit registration-error handling and actual source-count wording. The static no-API sample path rendered real bundled sources with Local/AI/Refresh disabled; no service was publicly deployed.
 - Final local application console had no relevant errors/warnings. The QA tab for the transient static server was closed, that server stopped, viewport overrides reset, and the main loopback application retained for the user.
 - Intended Git payload checked against the actual configured credential and all three registered roots, with no matches. Runtime configuration, scan records and provider diagnostics are ignored. Secret-shaped test literals are synthetic sanitizer regression inputs.
+
+## User-approved visual replacement
+- The user rejected the earlier frontend after the initial delivery. Earlier internal visual sign-off is historical and is not evidence of user acceptance.
+- The user narrowed frontend scope to desktop web/desktop form. We implement the local desktop-browser workbench; mobile-specific layouts and native desktop packaging are not part of this revision.
+- Several generated design directions were rejected. The upper-table/lower-detail composition was explicitly rejected, as were oversized/mechanical typography and candy-like gradients. The user selected the continuous central review manuscript with a narrow right navigation, then chose the latest displayed typography/color option 1 as final.
+- Exact selected reference: `design/literary-graphite-concept.png`, copied without modifying the generated source. It is the Literary Graphite variant, not an earlier option with the same ordinal.
+- Implement the approved structure in the existing React/Vite project. Product Design template initialization is unnecessary because the user requested changes to this working app with its existing real backend and persistence.
+- Newsreader and Instrument Sans are self-hosted with upstream license/source records; standard icons use a matching outline library. Generated standalone background and transparent lens symbol are used as raster assets. UI text and controls remain native components.
+- Edit scope contains configuration, project selection/scan, pins, coverage/refresh and analysis. The right project selector filters the current review view; it does not silently change what roots are collected or sent to the model.
+- Transition polish must preserve task notes and focus, follow current evidence selection and honor reduced-motion preferences. No new model requests or backend workflow features are needed for the visual replacement.

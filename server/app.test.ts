@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createApp, loadRegistrations } from "./app.js";
 import { mkdtemp, writeFile, unlink, rmdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { loadSnapshots } from "./releases.js";
 import { GoProvider } from "./provider.js";
 test("missing registration supports demo startup, malformed or unreadable registration fails explicitly", async (t) => {
@@ -250,4 +250,29 @@ test("development Vite entry host and origin work only in development mode", asy
     (await fetch("http://127.0.0.1:44321/api/bootstrap", { headers })).status,
     200,
   );
+});
+test("self-hosted font bytes are served with WOFF2 MIME under the local static policy", async (t) => {
+  const server = createApp({
+    port: 44322,
+    registrations: [],
+    releases: await loadSnapshots(),
+    provider: new GoProvider({ sessionId: "test" }),
+    distRoot: resolve("public"),
+  });
+  await new Promise<void>((done) => server.listen(44322, "127.0.0.1", done));
+  t.after(() => server.close());
+  const response = await fetch(
+    "http://127.0.0.1:44322/fonts/newsreader-latin-variable.woff2",
+  );
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("content-type"), "font/woff2");
+  assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+  assert.ok(
+    response.headers
+      .get("content-security-policy")
+      ?.includes("default-src 'self'"),
+  );
+  const bytes = Buffer.from(await response.arrayBuffer());
+  assert.equal(bytes.subarray(0, 4).toString("ascii"), "wOF2");
+  assert.ok(bytes.length > 10000);
 });
